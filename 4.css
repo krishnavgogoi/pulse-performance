@@ -39,8 +39,9 @@ html,body{
 #ptop .elem{
     display: flex;
    align-items: center;
-   gap: 15px;
-   padding:15px ;
+   gap: 15vw;
+   padding:15vw ;
+   font-size:10vw;
      
 }
 .elem h2{
