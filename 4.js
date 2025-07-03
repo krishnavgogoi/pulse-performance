@@ -1,233 +1,95 @@
-var cur=document.querySelector("#cursor");
-var curr=document.querySelector(".cur1")
-var sc1=document.querySelector("#bottom .two2 .a");
-var sc2=document.querySelector("#bottom .two2 .b");
-var sc3=document.querySelector("#bottom .two2 .c");
 
+//    // ==== Global variables ====
+var score = 0;
+var timer = 60;  
+var hitrn = 0;  // Current hit number
+var timerint = null;
 
+// ==== Cache DOM elements ====
+var pbtm = document.querySelector("#pbtm");
+var scoreval = document.querySelector("#scoreval");
+var timerval = document.querySelector("#timerval");
+var hitval = document.querySelector("#hitval");
+var scorScreen = document.querySelector("#main .scor");
+var finalScore = document.querySelector("#main .scor h5");
+var replayBtn = document.querySelector("#main .replay");
 
+// ==== Functions ====
 
-function cursorshape() {
-  var xscale = 1;
-  var yscale = 1;
-
-  var xprev = 0;
-  var yprev = 0;
-
-  document.addEventListener("mousemove", function (dets) {
-    var xdiff = dets.clientX - xprev;
-    var ydiff = dets.clientY - yprev;
-
-    xscale = gsap.utils.clamp(0.7, 1.6, xdiff / 10); // normalize
-    yscale = gsap.utils.clamp(0.7, 1.6, ydiff / 10); // normalize
-
-    xprev = dets.clientX;
-    yprev = dets.clientY;
-
-    cur.style.left = dets.clientX + "px";
-    cur.style.top = dets.clientY + "px";
-    cur.style.transform = `translate(-50%, -50%) scale(${xscale}, ${yscale})`;
-  });
+// Create 72 bubbles with random digits and show them
+function makebubble() {
+  var clutter = "";
+  for (var i = 1; i <= 72; i++) {
+    clutter += `<div class="bubble">${Math.floor(Math.random() * 10)}</div>`;
+  }
+  pbtm.innerHTML = clutter;
 }
 
-cursorshape();
+// Increase score and update display
+function increasescore() {
+  score += 10;
+  scoreval.textContent = score;
+}
 
+// Pick new target number and update display
+function getnewhit() {
+  hitrn = Math.floor(Math.random() * 10);
+  hitval.textContent = hitrn;
+}
 
+// Start the countdown timer
+function runtimer() {
+  timerint = setInterval(function () {
+    if (timer > 0) {
+      timer--;
+      timerval.textContent = timer;
+    } else {
+      clearInterval(timerint);
 
+      // Game over UI update
+      pbtm.innerHTML = "";
+      finalScore.textContent = score;
+      scorScreen.style.opacity = 1;
+      scorScreen.style.zIndex = 9;
 
+      // Replay button event (only once)
+      replayBtn.addEventListener(
+        "click",
+        function () {
+          scorScreen.style.zIndex = -1;
+          scorScreen.style.opacity = 0;
 
+          timer = 60; // reset timer, change to 60 when ready
+          score = 0;
+          scoreval.textContent = 0;
 
-sc1.addEventListener("mouseenter",function() {
-    cur.style.transform = "translate(-50%, -50%) scale(2.4)";
-   
-   
-})
+          makebubble();
+          getnewhit();
+          runtimer();
+        },
+        { once: true }
+      );
+    }
+  }, 1000);
+}
 
-sc1.addEventListener("mouseleave",function(){
-    cur.style.transform = "translate(-50%, -50%) scale(1)";
+// ==== Event Listeners ====
 
-})
-sc2.addEventListener("mouseenter",function(){
-    cur.style.transform = "translate(-50%, -50%) scale(2.4)";
-
-})
-
-sc2.addEventListener("mouseleave",function(){
-    cur.style.transform = "translate(-50%, -50%) scale(1)";
-
-})
-sc3.addEventListener("mouseenter",function(){
-    cur.style.transform = "translate(-50%, -50%) scale(1.4)";
-
-})
-
-sc3.addEventListener("mouseleave",function(){
-    cur.style.transform = "translate(-50%, -50%) scale(1)";
-     
-})
-
-var ferari=document.querySelector("#cont .c1")
-var lamb=document.querySelector("#cont .c2")
-var audi=document.querySelector("#cont .c3")
-var porche=document.querySelector("#cont .c4")
-
-
-
-
-var img2=document.querySelector("#right2 #b img");
-var img3=document.querySelector("#right2 #c img");
-var img4=document.querySelector("#right2 #d img");
-
-    var imge1 = document.querySelector("#right2 #hel img");
-    console.log(imge1); // should not be null now
-
-var blnk=document.querySelector("#right2 #blanka");
-
-
-
-
-ferari.addEventListener("mouseleave",function(){
-
-    ferari.style.color="white";
-    ferari.style.transform="translateX(-20px)";
-    cur.style.transform = "translate(-50%, -50%) scale(1)";
-    curr.textContent="";
-   
-    blnk.style.opacity=0;
-    cur.style.height="4vh";
-    cur.style.width="4vh";
-   
-})
-ferari.addEventListener("mouseenter",function(){
-
-    ferari.style.color="rgba(251, 62, 59, 0.811)";
-    ferari.style.transform="translateX(20px)";
-    cur.style.transform = "translate(-50%, -50%) )";
-    // curr.textContent="VIEW";
-    imge1.style.opacity=1;
-    blnk.style.opacity=0;
-    img2.style.opacity=0;
-    img3.style.opacity=0;
-    img4.style.opacity=0;
-    cur.style.height="9vh";
-    cur.style.width="9vh";
-})
-// ferari.addEventListener("mouseenter",()=> {
-//     hoverScale = 3.4;
-
-// });
-
-lamb.addEventListener("mouseenter",function(){
-
-    lamb.style.color="rgba(152, 59, 251, 0.811)";
-    lamb.style.transform="translateX(20px)";
-    lamb.style.opacity=0.8;
-    cur.style.transform = "translate(-50%, -50%) scale(2.9)";
-    // curr.textContent="VIEW";
-    img2.style.opacity=1;
-    imge1.style.opacity=0;
-    img3.style.opacity=0;
-    img4.style.opacity=0;
-    blnk.style.opacity=0;
-    cur.style.height="9vh";
-    cur.style.width="9vh";
-})
-
-lamb.addEventListener("mouseleave",function(){
-
-    lamb.style.color="white";
-    lamb.style.transform="translateX(-20px)";
-    lamb.style.opacity=1;
-    cur.style.transform = "translate(-50%, -50%) scale(1)";
-    curr.textContent="";
-    cur.style.height="4vh";
-    cur.style.width="4vh";
-   
-})
-
-
-audi.addEventListener("mouseenter",function(){
-
-    audi.style.color=" rgba(147, 147, 147, 0.811)";
-    audi.style.transform="translateX(20px)";
-    cur.style.transform = "translate(-50%, -50%) scale(2.9)";
-    // curr.textContent="VIEW"
-    img3.style.opacity=1;
-    imge1.style.opacity=0;
-    img2.style.opacity=0;
-    img4.style.opacity=0;
-    blnk.style.opacity=0;
-    cur.style.height="9vh";
-    cur.style.width="9vh";
-
-})
-
-audi.addEventListener("mouseleave",function(){
-
-    audi.style.color="white";
-    audi.style.transform="translateX(-20px)";
-    cur.style.transform = "translate(-50%, -50%) scale(1)";
-    curr.textContent="";
-    cur.style.height="4vh";
-    cur.style.width="4vh";
-})
-
-
-porche.addEventListener("mouseenter",function(){
-
-    porche.style.color=" rgba(250, 208, 42, 0.811)";
-    porche.style.transform="translateX(20px)";
-    cur.style.transform = "translate(-50%, -50%) scale(2.9)";
-    // curr.textContent="VIEW"
-    img4.style.opacity=1;
-    imge1.style.opacity=0;
-    img2.style.opacity=0;
-    img3.style.opacity=0;
-    blnk.style.opacity=0;
-    cur.style.height="9vh";
-    cur.style.width="9vh";
-})
-
-porche.addEventListener("mouseleave",function(){
-
-    porche.style.color="white";
-    porche.style.transform="translateX(-20px)";
-    cur.style.transform = "translate(-50%, -50%) scale(1)";
-    curr.textContent="";
-    cur.style.height="4vh";
-    cur.style.width="4vh";
-})
-
-var ar1=document.querySelector("#cont .c1")
-var img1=document.querySelector("#cont .c1 img")
-// ar1.addEventListener("mousemove",function(detss){
-//     img1.style.left=detss.x+"px"
-//     img1.style.top=detss.y+"px"
-// })
-ar1.addEventListener("mouseenter", function () {
-    img1.style.opacity = 1;
+// When user clicks a bubble
+pbtm.addEventListener("click", function (dets) {
+  if (dets.target.classList.contains("bubble")) {
+    var clickedno = Number(dets.target.textContent);
+    if (clickedno === hitrn) {
+      increasescore();
+      makebubble();
+      getnewhit();
+    }
+  }
 });
-ar1.addEventListener("mouseleave", function () {
-    img1.style.opacity = 0;
-});
- console.log(img1);
 
- gsap.from("#page1 #top",{
-    y:-600,
-    duration:1.6,
-    opacity:0,
- })
-
- gsap.from("#page1 #middle",{
-    y:600,
-    duration:1.4,
-    opacity:0,
- })
- gsap.from("#page1 #bottom",{
-    y:600,
-    duration:1.5,
-    opacity:0,
- })
-
+// ==== Start game ====
+makebubble();
+getnewhit();
+runtimer();
 
  
