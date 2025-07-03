@@ -26,23 +26,24 @@ html,body{
     overflow: hidden;
    
 }
-#ptop{
-    padding:0px 20%;
+#ptop {
+    padding: 0px 5%;  /* Reduced from 20% */
     width: 100%;
     height: 60px;
     background-color: green;
     display: flex;
-   color: white;
-   justify-content: space-between;
-  
+    color: white;
+    justify-content: space-between;
 }
-#ptop .elem{
+
+#ptop .elem {
     display: flex;
-   align-items: center;
-   gap: 15px;
-   padding:15px ;
-     
+    align-items: center;
+    gap: 20px;           /* Use fixed or small responsive gap */
+    padding: 0 10px;     /* Avoid excessive padding */
+    font-size: 1.2rem;   /* Responsive and readable font size */
 }
+
 .elem h2{
     font-weight: 800;
 }
